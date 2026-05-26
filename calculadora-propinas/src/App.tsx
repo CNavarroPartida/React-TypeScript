@@ -1,13 +1,13 @@
 import {menuItems} from "./data/db.ts";
 import MenuItem from "./components/MenuItem";
-import useOder from "./hooks/useOder";
 import OrderContent from "./components/OrderContent";
 import OrderTotal from "./components/OrderTotal";
 import TipPercentageForm from "./components/TipPercentageForm";
+import {useReducer} from "react";
+import {initialState, orderReducer} from "./reducer/order-reducer.tsx";
 
 function App() {
-
-    const {order, tip, setTip, addItem, removeItem, placeOrder} = useOder();
+    const [state, dispatch] = useReducer(orderReducer, initialState);
 
     return (
         <>
@@ -23,26 +23,26 @@ function App() {
                             <MenuItem
                                 key={item.id}
                                 item={item}
-                                addItem={addItem}
+                                dispatch={dispatch}
                             />
                         ))}
                     </div>
                 </div>
                 <div className="border border-dashed border-slate-300 p-5 rounded-lg space-y-10">
-                    {order.length > 0 ? (
+                    {state.order.length > 0 ? (
                         <>
                             <OrderContent
-                                order={order}
-                                removeItem={removeItem}
+                                order={state.order}
+                                dispatch={dispatch}
                             />
                             <TipPercentageForm
-                                setTip={setTip}
-                                tip={tip}
+                                tip={state.tip}
+                                dispatch={dispatch}
                             />
                             <OrderTotal
-                                order={order}
-                                tip={tip}
-                                placeOrder={placeOrder}
+                                order={state.order}
+                                tip={state.tip}
+                                dispatch={dispatch}
                             />
                         </>
                     ) : (
