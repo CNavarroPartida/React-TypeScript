@@ -1,12 +1,12 @@
-import {useEffect, useMemo, useReducer} from "react";
+import {useEffect, useMemo} from "react";
 import Form from "./components/Form.tsx";
-import { activityReducer, initialState} from "./reducers/activityReducer.ts";
 import ActivityList from "./components/ActivityList.tsx";
 import CalorieTracker from "./components/CalorieTracker.tsx";
+import {useActivity} from "./hooks/useActivity.ts";
 
 function App() {
 
-    const [state, dispatch] = useReducer(activityReducer, initialState)
+    const {state, dispatch} = useActivity()
 
     useEffect(() => {
         localStorage.setItem("activities", JSON.stringify(state.activities));
@@ -25,7 +25,7 @@ function App() {
                         className="bg-gray-800 hover:bg-gray-900 p-2 font-bold uppercase text-white cursor-pointer
                         rounded-lg text-sm disabled:opacity-10"
                         disabled={!canRestartApp()}
-                        onClick={ () => dispatch({type: 'restart-app'})}
+                        onClick={() => dispatch({type: 'restart-app'})}
                     >
                         Reiniciar App
                     </button>
@@ -34,26 +34,18 @@ function App() {
 
             <section className="bg-lime-500 py-20 px-5">
                 <div className="max-w-2xl mx-auto">
-                    <Form
-                        state={state}
-                        dispatch={dispatch}
-                    />
+                    <Form/>
                 </div>
             </section>
 
             <section className="bg-gray-800 py-10">
                 <div className="max-w-2xl mx-auto">
-                    <CalorieTracker
-                        activities={state.activities}
-                    />
+                    <CalorieTracker />
                 </div>
             </section>
 
             <section className="p-10 mx-auto max-w-4xl">
-                <ActivityList
-                    activities={state.activities}
-                    dispatch={dispatch}
-                />
+                <ActivityList/>
             </section>
         </>
     )

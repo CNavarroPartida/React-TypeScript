@@ -1,3 +1,4 @@
+
 import {useBudget} from "../hooks/useBudget.ts";
 import {useMemo} from "react";
 import ExpenseDetail from "./ExpenseDetail.tsx";
